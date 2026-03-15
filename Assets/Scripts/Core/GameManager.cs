@@ -40,6 +40,20 @@ public class GameManager : MonoBehaviour
             Debug.Log("Return key pressed - starting game");
             StartGame();
         }
+        // TEMP 2.1 test — remove after testing
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            var anomalyManager = FindObjectOfType<AnomalyManager>();
+            if (anomalyManager != null)
+            {
+                var anomaly = FindObjectOfType<BurningPlantAnomaly>();
+                if (anomaly != null)
+                {
+                    anomalyManager.SetTestAnomaly(anomaly);
+                    anomaly.Activate();
+                }
+            }
+        }
     }
 
 

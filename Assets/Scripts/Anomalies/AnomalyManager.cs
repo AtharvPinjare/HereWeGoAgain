@@ -196,6 +196,8 @@ public class AnomalyManager : MonoBehaviour
 
         currentActiveAnomaly.Resolve();
         currentActiveAnomaly = null;
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnDayResolved();
     }
 
     public void TriggerGreenOnAnomalyDay()
@@ -324,4 +326,11 @@ public class AnomalyManager : MonoBehaviour
 
         Debug.Log(builder.ToString());
     }
+
+    //TESTING Anomaly
+    public void SetTestAnomaly(AnomalyBase anomaly)
+    {
+        currentActiveAnomaly = anomaly;
+    }
+
 }

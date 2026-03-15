@@ -6,6 +6,12 @@ TagManager:
   tags:
   - CinemachineTarget
   - Interactable
+  - EntranceTrigger
+  - AnomalyFrame
+  - RoomLight
+  - AnomalyClockcase
+  - AnomalyPlant
+  - ReadableText
   layers:
   - Default
   - TransparentFX

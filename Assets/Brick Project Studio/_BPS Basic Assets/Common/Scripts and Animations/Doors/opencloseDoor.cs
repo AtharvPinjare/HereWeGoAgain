@@ -3,11 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 namespace SojaExiles
-
 {
 	public class opencloseDoor : MonoBehaviour
 	{
-
 		public Animator openandclose;
 		public bool open;
 		public Transform Player;

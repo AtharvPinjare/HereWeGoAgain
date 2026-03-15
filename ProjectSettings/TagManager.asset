@@ -12,6 +12,8 @@ TagManager:
   - AnomalyClockcase
   - AnomalyPlant
   - ReadableText
+  - BathroomSurface
+  - BathtubBathroom
   layers:
   - Default
   - TransparentFX

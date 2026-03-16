@@ -204,8 +204,7 @@ public class GameManager : MonoBehaviour
     public void OnGameWon()
     {
         StopTrackedCoroutines();
-        TransitionToState(GameState.GameWon);
-        EventBus.OnGameWon?.Invoke();
+        StartCoroutine(WinSequence());
     }
 
     public void ExpandButtonPool()
@@ -229,6 +228,14 @@ public class GameManager : MonoBehaviour
         TransitionToState(GameState.DayStart);
         EventBus.OnDayStarted?.Invoke(currentDay);
         nextDayCoroutine = null;
+    }
+
+    private IEnumerator WinSequence()
+    {
+        yield return StartCoroutine(TeleportPlayerToSpawn());
+        yield return new WaitForSeconds(1.5f);
+        TransitionToState(GameState.GameWon);
+        EventBus.OnGameWon?.Invoke();
     }
 
     private IEnumerator TeleportPlayerToSpawn()
@@ -277,7 +284,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(deathScreenHoldDuration);
         resetCoroutine = null;
-        BeginRun();
+        StartGame();
     }
 
     private void HandleAnomalyResolved(string _)

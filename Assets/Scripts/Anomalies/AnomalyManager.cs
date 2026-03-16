@@ -1,9 +1,11 @@
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
 public class AnomalyManager : MonoBehaviour
 {
+    [SerializeField] private float anomalyActivationDelay = 12.0f;
     [SerializeField] private AnomalyBase[] allAnomalies;
 
     private AnomalyBase currentActiveAnomaly = null;
@@ -164,29 +166,17 @@ public class AnomalyManager : MonoBehaviour
 
     public void ActivateDayAnomaly(int day)
     {
-        currentActiveAnomaly = null;
-
-        if (dayAssignments == null || day < 1 || day > dayAssignments.Length)
+        if (dayAssignments == null) return;
+        int index = dayAssignments[day - 1];
+        if (index == -1)
         {
+            currentActiveAnomaly = null;
             return;
         }
-
-        int anomalyIndex = dayAssignments[day - 1];
-        if (anomalyIndex < 0 ||
-            allAnomalies == null ||
-            anomalyIndex >= allAnomalies.Length ||
-            allAnomalies[anomalyIndex] == null)
-        {
-            return;
-        }
-
-        currentActiveAnomaly = allAnomalies[anomalyIndex];
-        currentActiveAnomaly.Activate();
-
-        if (currentActiveAnomaly.Data != null)
-        {
-            EventBus.OnAnomalyActivated?.Invoke(currentActiveAnomaly.Data.id);
-        }
+        if (allAnomalies == null || index >= allAnomalies.Length) return;
+        currentActiveAnomaly = allAnomalies[index];
+        if (currentActiveAnomaly == null) return;
+        StartCoroutine(DelayedActivate(currentActiveAnomaly));
     }
 
     public void ResolveCurrentAnomaly()
@@ -250,7 +240,9 @@ public class AnomalyManager : MonoBehaviour
 
     private void HandleREDPressed()
     {
-        if (currentActiveAnomaly != null)
+        if (currentActiveAnomaly != null &&
+            currentActiveAnomaly.Data != null &&
+            currentActiveAnomaly.Data.isActive)
         {
             ResolveCurrentAnomaly();
             return;
@@ -261,7 +253,9 @@ public class AnomalyManager : MonoBehaviour
 
     private void HandleGREENPressed()
     {
-        if (currentActiveAnomaly != null)
+        if (currentActiveAnomaly != null &&
+            currentActiveAnomaly.Data != null &&
+            currentActiveAnomaly.Data.isActive)
         {
             TriggerGreenOnAnomalyDay();
             return;
@@ -288,6 +282,15 @@ public class AnomalyManager : MonoBehaviour
         {
             ResetAll();
         }
+    }
+
+    private IEnumerator DelayedActivate(AnomalyBase anomaly)
+    {
+        yield return new WaitForSeconds(anomalyActivationDelay);
+        if (anomaly == null) yield break;
+        anomaly.Activate();
+        if (anomaly.Data != null)
+            EventBus.OnAnomalyActivated?.Invoke(anomaly.Data.id);
     }
 
     private void ShuffleArray(int[] array)

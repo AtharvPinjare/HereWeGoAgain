@@ -2,7 +2,7 @@
 
 A **first-person anomaly detection horror game** built in **Unity 2022.3 LTS** for the **Tripo AI Game Jam**.
 
-**Theme:** Cliché
+**Theme:** Cliché and “The More You Use It, The Worse It Gets”
 
 Players patrol a mysterious apartment building where global disasters manifest as supernatural anomalies.  
 Each day you must decide whether the world is safe — or if something has gone terribly wrong.

@@ -5,7 +5,7 @@ public class BleedingFrameAnomaly : AnomalyBase
 {
     [SerializeField] private GameObject frameObject;
     [SerializeField] private Renderer frameRenderer;
-    [SerializeField] private string bloodShaderParam = "_BloodFill";
+    [SerializeField] private string _BaseColor = "  ";
     [SerializeField] private float stage1Duration = 60.0f;
     [SerializeField] private float shakeIntensity = 0.04f;
     [SerializeField] private float shakeFrequency = 18.0f;
@@ -40,9 +40,9 @@ public class BleedingFrameAnomaly : AnomalyBase
         {
             frameMaterialInstance = frameRenderer.material;
 
-            if (frameMaterialInstance.HasProperty(bloodShaderParam))
+            if (frameMaterialInstance.HasProperty(_BaseColor))
             {
-                frameMaterialInstance.SetFloat(bloodShaderParam, 0f);
+                frameMaterialInstance.SetFloat(_BaseColor, 0f);
             }
         }
     }
@@ -139,9 +139,9 @@ public class BleedingFrameAnomaly : AnomalyBase
             float acceleratedFill = normalizedTime * normalizedTime;
 
             if (frameMaterialInstance != null &&
-                frameMaterialInstance.HasProperty(bloodShaderParam))
+                frameMaterialInstance.HasProperty(_BaseColor))
             {
-                frameMaterialInstance.SetFloat(bloodShaderParam, acceleratedFill);
+                frameMaterialInstance.SetFloat(_BaseColor, acceleratedFill);
             }
 
             yield return null;
@@ -257,9 +257,9 @@ public class BleedingFrameAnomaly : AnomalyBase
     private void ResetFrameVisuals()
     {
         if (frameMaterialInstance != null &&
-            frameMaterialInstance.HasProperty(bloodShaderParam))
+            frameMaterialInstance.HasProperty(_BaseColor))
         {
-            frameMaterialInstance.SetFloat(bloodShaderParam, 0f);
+            frameMaterialInstance.SetFloat(_BaseColor, 0f);
         }
     }
 }

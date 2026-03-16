@@ -210,9 +210,14 @@ public class AnomalyManager : MonoBehaviour
         }
 
         ContaminatedBathroomAnomaly bathroomAnomaly = currentActiveAnomaly as ContaminatedBathroomAnomaly;
+        CorruptedTextAnomaly textAnomaly = currentActiveAnomaly as CorruptedTextAnomaly;
         if (bathroomAnomaly != null)
         {
             bathroomAnomaly.TriggerGreenFail();
+        }
+        else if (textAnomaly != null)
+        {
+            textAnomaly.TriggerGreenFail();
         }
         else
         {

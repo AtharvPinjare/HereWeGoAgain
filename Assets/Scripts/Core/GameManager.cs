@@ -113,6 +113,17 @@ public class GameManager : MonoBehaviour
                 anomaly.Activate();
             }
         }
+        // TEMP 2.8 test — remove after testing
+        if (Input.GetKeyDown(KeyCode.Alpha8))
+        {
+            var anomalyManager = FindObjectOfType<AnomalyManager>();
+            var anomaly = FindObjectOfType<CorruptedTextAnomaly>();
+            if (anomalyManager != null && anomaly != null)
+            {
+                anomalyManager.SetTestAnomaly(anomaly);
+                anomaly.Activate();
+            }
+        }
     }
 
 

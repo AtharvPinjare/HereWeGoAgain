@@ -91,6 +91,17 @@ public class GameManager : MonoBehaviour
                 anomaly.Activate();
             }
         }
+        // TEMP 2.5 test — remove after testing
+        if (Input.GetKeyDown(KeyCode.Alpha5))
+        {
+            var anomalyManager = FindObjectOfType<AnomalyManager>();
+            var anomaly = FindObjectOfType<ContaminatedBathroomAnomaly>();
+            if (anomalyManager != null && anomaly != null)
+            {
+                anomalyManager.SetTestAnomaly(anomaly);
+                anomaly.Activate();
+            }
+        }
     }
 
 

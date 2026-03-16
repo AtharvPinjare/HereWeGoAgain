@@ -209,7 +209,15 @@ public class AnomalyManager : MonoBehaviour
             return;
         }
 
-        currentActiveAnomaly.TriggerFailState();
+        ContaminatedBathroomAnomaly bathroomAnomaly = currentActiveAnomaly as ContaminatedBathroomAnomaly;
+        if (bathroomAnomaly != null)
+        {
+            bathroomAnomaly.TriggerGreenFail();
+        }
+        else
+        {
+            currentActiveAnomaly.TriggerFailState();
+        }
     }
 
     public void ResetAll()

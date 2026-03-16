@@ -102,6 +102,17 @@ public class GameManager : MonoBehaviour
                 anomaly.Activate();
             }
         }
+        // TEMP 2.7 test — remove after testing
+        if (Input.GetKeyDown(KeyCode.Alpha7))
+        {
+            var anomalyManager = FindObjectOfType<AnomalyManager>();
+            var anomaly = FindObjectOfType<BackwardClockAnomaly>();
+            if (anomalyManager != null && anomaly != null)
+            {
+                anomalyManager.SetTestAnomaly(anomaly);
+                anomaly.Activate();
+            }
+        }
     }
 
 

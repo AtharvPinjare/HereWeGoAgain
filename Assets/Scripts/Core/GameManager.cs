@@ -43,87 +43,87 @@ public class GameManager : MonoBehaviour
             Debug.Log("Return key pressed - starting game");
             StartGame();
         }
-        // TEMP 2.1 test — remove after testing
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            var anomalyManager = FindObjectOfType<AnomalyManager>();
-            if (anomalyManager != null)
-            {
-                var anomaly = FindObjectOfType<BurningPlantAnomaly>();
-                if (anomaly != null)
-                {
-                    anomalyManager.SetTestAnomaly(anomaly);
-                    anomaly.Activate();
-                }
-            }
-        }
-        // TEMP 2.2 test — remove after testing
-        if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            var anomalyManager = FindObjectOfType<AnomalyManager>();
-            var anomaly = FindObjectOfType<AttackingDollsAnomaly>();
-            if (anomalyManager != null && anomaly != null)
-            {
-                anomalyManager.SetTestAnomaly(anomaly);
-                anomaly.Activate();
-            }
-        }
+        // // TEMP 2.1 test — remove after testing
+        // if (Input.GetKeyDown(KeyCode.Alpha1))
+        // {
+        //     var anomalyManager = FindObjectOfType<AnomalyManager>();
+        //     if (anomalyManager != null)
+        //     {
+        //         var anomaly = FindObjectOfType<BurningPlantAnomaly>();
+        //         if (anomaly != null)
+        //         {
+        //             anomalyManager.SetTestAnomaly(anomaly);
+        //             anomaly.Activate();
+        //         }
+        //     }
+        // }
+        // // TEMP 2.2 test — remove after testing
+        // if (Input.GetKeyDown(KeyCode.Alpha2))
+        // {
+        //     var anomalyManager = FindObjectOfType<AnomalyManager>();
+        //     var anomaly = FindObjectOfType<AttackingDollsAnomaly>();
+        //     if (anomalyManager != null && anomaly != null)
+        //     {
+        //         anomalyManager.SetTestAnomaly(anomaly);
+        //         anomaly.Activate();
+        //     }
+        // }
 
-        // TEMP 2.3 test — remove after testing
-        if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            var anomalyManager = FindObjectOfType<AnomalyManager>();
-            var anomaly = FindObjectOfType<ElectricityShortageAnomaly>();
-            if (anomalyManager != null && anomaly != null)
-            {
-                anomalyManager.SetTestAnomaly(anomaly);
-                anomaly.Activate();
-            }
-        }
-        // TEMP 2.4 test — remove after testing
-        if (Input.GetKeyDown(KeyCode.Alpha4))
-        {
-            var anomalyManager = FindObjectOfType<AnomalyManager>();
-            var anomaly = FindObjectOfType<BleedingFrameAnomaly>();
-            if (anomalyManager != null && anomaly != null)
-            {
-                anomalyManager.SetTestAnomaly(anomaly);
-                anomaly.Activate();
-            }
-        }
-        // TEMP 2.5 test — remove after testing
-        if (Input.GetKeyDown(KeyCode.Alpha5))
-        {
-            var anomalyManager = FindObjectOfType<AnomalyManager>();
-            var anomaly = FindObjectOfType<ContaminatedBathroomAnomaly>();
-            if (anomalyManager != null && anomaly != null)
-            {
-                anomalyManager.SetTestAnomaly(anomaly);
-                anomaly.Activate();
-            }
-        }
-        // TEMP 2.7 test — remove after testing
-        if (Input.GetKeyDown(KeyCode.Alpha7))
-        {
-            var anomalyManager = FindObjectOfType<AnomalyManager>();
-            var anomaly = FindObjectOfType<BackwardClockAnomaly>();
-            if (anomalyManager != null && anomaly != null)
-            {
-                anomalyManager.SetTestAnomaly(anomaly);
-                anomaly.Activate();
-            }
-        }
-        // TEMP 2.8 test — remove after testing
-        if (Input.GetKeyDown(KeyCode.Alpha8))
-        {
-            var anomalyManager = FindObjectOfType<AnomalyManager>();
-            var anomaly = FindObjectOfType<CorruptedTextAnomaly>();
-            if (anomalyManager != null && anomaly != null)
-            {
-                anomalyManager.SetTestAnomaly(anomaly);
-                anomaly.Activate();
-            }
-        }
+        // // TEMP 2.3 test — remove after testing
+        // if (Input.GetKeyDown(KeyCode.Alpha3))
+        // {
+        //     var anomalyManager = FindObjectOfType<AnomalyManager>();
+        //     var anomaly = FindObjectOfType<ElectricityShortageAnomaly>();
+        //     if (anomalyManager != null && anomaly != null)
+        //     {
+        //         anomalyManager.SetTestAnomaly(anomaly);
+        //         anomaly.Activate();
+        //     }
+        // }
+        // // TEMP 2.4 test — remove after testing
+        // if (Input.GetKeyDown(KeyCode.Alpha4))
+        // {
+        //     var anomalyManager = FindObjectOfType<AnomalyManager>();
+        //     var anomaly = FindObjectOfType<BleedingFrameAnomaly>();
+        //     if (anomalyManager != null && anomaly != null)
+        //     {
+        //         anomalyManager.SetTestAnomaly(anomaly);
+        //         anomaly.Activate();
+        //     }
+        // }
+        // // TEMP 2.5 test — remove after testing
+        // if (Input.GetKeyDown(KeyCode.Alpha5))
+        // {
+        //     var anomalyManager = FindObjectOfType<AnomalyManager>();
+        //     var anomaly = FindObjectOfType<ContaminatedBathroomAnomaly>();
+        //     if (anomalyManager != null && anomaly != null)
+        //     {
+        //         anomalyManager.SetTestAnomaly(anomaly);
+        //         anomaly.Activate();
+        //     }
+        // }
+        // // TEMP 2.7 test — remove after testing
+        // if (Input.GetKeyDown(KeyCode.Alpha7))
+        // {
+        //     var anomalyManager = FindObjectOfType<AnomalyManager>();
+        //     var anomaly = FindObjectOfType<BackwardClockAnomaly>();
+        //     if (anomalyManager != null && anomaly != null)
+        //     {
+        //         anomalyManager.SetTestAnomaly(anomaly);
+        //         anomaly.Activate();
+        //     }
+        // }
+        // // TEMP 2.8 test — remove after testing
+        // if (Input.GetKeyDown(KeyCode.Alpha8))
+        // {
+        //     var anomalyManager = FindObjectOfType<AnomalyManager>();
+        //     var anomaly = FindObjectOfType<CorruptedTextAnomaly>();
+        //     if (anomalyManager != null && anomaly != null)
+        //     {
+        //         anomalyManager.SetTestAnomaly(anomaly);
+        //         anomaly.Activate();
+        //     }
+        // }
     }
 
 

@@ -68,6 +68,18 @@ public class GameManager : MonoBehaviour
                 anomaly.Activate();
             }
         }
+
+        // TEMP 2.3 test — remove after testing
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            var anomalyManager = FindObjectOfType<AnomalyManager>();
+            var anomaly = FindObjectOfType<ElectricityShortageAnomaly>();
+            if (anomalyManager != null && anomaly != null)
+            {
+                anomalyManager.SetTestAnomaly(anomaly);
+                anomaly.Activate();
+            }
+        }
     }
 
 
@@ -108,13 +120,7 @@ public class GameManager : MonoBehaviour
             }
         }
 
-        if (playerObject != null && playerSpawnPoint != null)
-        {
-            playerObject.transform.position =
-                playerSpawnPoint.position;
-            playerObject.transform.rotation =
-                playerSpawnPoint.rotation;
-        }
+        StartCoroutine(TeleportPlayerToSpawn());
 
         TransitionToState(GameState.DayStart);
         EventBus.OnDayStarted?.Invoke(currentDay);
@@ -173,19 +179,54 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(dayResolvedPauseDuration);
 
-        //Adding Player Respawn for each New Turn of day.
-        if (playerObject != null && playerSpawnPoint != null)
-        {
-            playerObject.transform.position =
-                playerSpawnPoint.position;
-            playerObject.transform.rotation =
-                playerSpawnPoint.rotation;
-        }
+        yield return StartCoroutine(TeleportPlayerToSpawn());
 
         currentDay = Mathf.Clamp(currentDay + 1, 1, 7);
         TransitionToState(GameState.DayStart);
         EventBus.OnDayStarted?.Invoke(currentDay);
         nextDayCoroutine = null;
+    }
+
+    private IEnumerator TeleportPlayerToSpawn()
+    {
+        if (playerObject != null && playerSpawnPoint != null)
+        {
+            MonoBehaviour[] playerScripts =
+                playerObject.GetComponentsInChildren<MonoBehaviour>();
+
+            CharacterController cc =
+                playerObject.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+
+            foreach (MonoBehaviour script in playerScripts)
+            {
+                if (script != null && !(script is GameManager))
+                    script.enabled = false;
+            }
+
+            yield return null;
+
+            playerObject.transform.SetPositionAndRotation(
+                playerSpawnPoint.position,
+                playerSpawnPoint.rotation);
+
+            Camera playerCam =
+                playerObject.GetComponentInChildren<Camera>();
+            if (playerCam != null)
+            {
+                playerCam.transform.localPosition = Vector3.zero;
+                playerCam.transform.localRotation = Quaternion.identity;
+            }
+
+            yield return null;
+
+            if (cc != null) cc.enabled = true;
+            foreach (MonoBehaviour script in playerScripts)
+            {
+                if (script != null && !(script is GameManager))
+                    script.enabled = true;
+            }
+        }
     }
 
     private IEnumerator WaitThenReset()

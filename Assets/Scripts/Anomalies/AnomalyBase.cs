@@ -16,6 +16,11 @@ public abstract class AnomalyBase : MonoBehaviour
         healthSystem = FindObjectOfType<HealthSystem>();
 
         if (healthSystem == null)
+            Debug.LogError("AnomalyBase: HealthSystem not found in scene.DealDamageToPlayer will not work. Ensure HealthSystem component exists on a GameObject in the scene.");
+        else
+            Debug.Log("AnomalyBase: HealthSystem cached successfully on " + gameObject.name);
+
+        if (healthSystem == null)
         {
             Debug.LogWarning($"{nameof(AnomalyBase)} could not find a {nameof(HealthSystem)} in the scene.");
         }

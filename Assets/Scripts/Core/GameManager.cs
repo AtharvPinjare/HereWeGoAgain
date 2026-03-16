@@ -13,6 +13,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float dayResolvedPauseDuration = 1.5f;
     [SerializeField] private float deathScreenHoldDuration = 2.0f;
 
+    [SerializeField] private Transform playerSpawnPoint;
+    [SerializeField] private GameObject playerObject;
+
     public GameState CurrentState => currentState;
     public int CurrentDay => currentDay;
     public int ButtonPoolSize => buttonPoolSize;
@@ -54,6 +57,17 @@ public class GameManager : MonoBehaviour
                 }
             }
         }
+        // TEMP 2.2 test — remove after testing
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            var anomalyManager = FindObjectOfType<AnomalyManager>();
+            var anomaly = FindObjectOfType<AttackingDollsAnomaly>();
+            if (anomalyManager != null && anomaly != null)
+            {
+                anomalyManager.SetTestAnomaly(anomaly);
+                anomaly.Activate();
+            }
+        }
     }
 
 
@@ -92,6 +106,14 @@ public class GameManager : MonoBehaviour
             {
                 dayCompletionRecord[i] = false;
             }
+        }
+
+        if (playerObject != null && playerSpawnPoint != null)
+        {
+            playerObject.transform.position =
+                playerSpawnPoint.position;
+            playerObject.transform.rotation =
+                playerSpawnPoint.rotation;
         }
 
         TransitionToState(GameState.DayStart);
@@ -150,6 +172,15 @@ public class GameManager : MonoBehaviour
     private IEnumerator WaitThenNextDay()
     {
         yield return new WaitForSeconds(dayResolvedPauseDuration);
+
+        //Adding Player Respawn for each New Turn of day.
+        if (playerObject != null && playerSpawnPoint != null)
+        {
+            playerObject.transform.position =
+                playerSpawnPoint.position;
+            playerObject.transform.rotation =
+                playerSpawnPoint.rotation;
+        }
 
         currentDay = Mathf.Clamp(currentDay + 1, 1, 7);
         TransitionToState(GameState.DayStart);

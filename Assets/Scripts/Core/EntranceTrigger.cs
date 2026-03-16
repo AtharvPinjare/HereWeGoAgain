@@ -14,11 +14,6 @@ public class EntranceTrigger : MonoBehaviour
             return;
         }
 
-        if (GameManager.Instance.CurrentState != GameState.DayStart)
-        {
-            return;
-        }
-
         GameManager.Instance.TransitionToState(GameState.DayActive);
     }
 }

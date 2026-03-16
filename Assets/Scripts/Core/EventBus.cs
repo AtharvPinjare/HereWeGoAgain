@@ -26,6 +26,7 @@ public static class EventBus
     public static Action OnPlayerDied;
     public static Action OnInputLocked;
     public static Action OnInputUnlocked;
+    public static Action OnHealthDepleted;
 
     // Run
     public static Action OnRunStarted;

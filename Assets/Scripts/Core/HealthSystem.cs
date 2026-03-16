@@ -28,7 +28,8 @@ public class HealthSystem : MonoBehaviour
         }
 
         currentHits++;
-
+        Debug.Log("Player hit. currentHits: " + currentHits
+            + " / maxHits: " + maxHits);
         if (vignetteImage != null && currentHits < vignetteStages.Length)
         {
             vignetteImage.color = vignetteStages[currentHits];
@@ -39,6 +40,7 @@ public class HealthSystem : MonoBehaviour
         if (currentHits >= maxHits)
         {
             SetDead();
+            Debug.Log("Player died from health depletion.");
         }
     }
 
@@ -61,7 +63,7 @@ public class HealthSystem : MonoBehaviour
         }
 
         isDead = true;
-        EventBus.OnPlayerDied?.Invoke();
+        EventBus.OnHealthDepleted?.Invoke();
     }
 
     private void HandleDayStarted(int dayNumber)

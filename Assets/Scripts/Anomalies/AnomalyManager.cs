@@ -18,6 +18,7 @@ public class AnomalyManager : MonoBehaviour
         EventBus.OnREDButtonPressed += HandleREDPressed;
         EventBus.OnGREENButtonPressed += HandleGREENPressed;
         EventBus.OnGameStateChanged += HandleGameStateChanged;
+        EventBus.OnHealthDepleted += HandleHealthDepleted;
     }
 
     private void OnDisable()
@@ -26,6 +27,7 @@ public class AnomalyManager : MonoBehaviour
         EventBus.OnREDButtonPressed -= HandleREDPressed;
         EventBus.OnGREENButtonPressed -= HandleGREENPressed;
         EventBus.OnGameStateChanged -= HandleGameStateChanged;
+        EventBus.OnHealthDepleted -= HandleHealthDepleted;
     }
 
     public void InitialiseRun()
@@ -257,6 +259,13 @@ public class AnomalyManager : MonoBehaviour
         if (GameManager.Instance != null)
         {
             GameManager.Instance.OnDayResolved();
+        }
+    }
+    private void HandleHealthDepleted()
+    {
+        if (currentActiveAnomaly != null)
+        {
+            currentActiveAnomaly.TriggerFailState();
         }
     }
 

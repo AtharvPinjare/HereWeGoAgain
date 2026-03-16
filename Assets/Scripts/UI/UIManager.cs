@@ -1,3 +1,6 @@
+using System;
+using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -6,6 +9,8 @@ public class UIManager : MonoBehaviour
     [Header("Day Display")]
     [SerializeField] private GameObject dayDisplayPanel;
     [SerializeField] private Text dayNumberText;
+    [SerializeField] private float dayDisplayDuration = 2.5f;
+    [SerializeField] private CanvasGroup dayDisplayCanvasGroup;
 
     [Header("State Label")]
     [SerializeField] private Text stateLabelText;
@@ -13,14 +18,18 @@ public class UIManager : MonoBehaviour
     [Header("Win Screen")]
     [SerializeField] private GameObject winScreenPanel;
     [SerializeField] private Text winTitleText;
+    [SerializeField] private CanvasGroup winScreenCanvasGroup;
 
     [Header("Death Screen")]
     [SerializeField] private GameObject deathScreenPanel;
     [SerializeField] private Text deathResetText;
+    [SerializeField] private CanvasGroup deathScreenCanvasGroup;
 
     [Header("Blackout")]
     [SerializeField] private Image blackoutImage;
+    [SerializeField] private AudioSource deathStingAudio;
 
+    private Coroutine dayDisplayCoroutine = null;
     private bool isInitialised = false;
 
     private void Awake()
@@ -48,27 +57,23 @@ public class UIManager : MonoBehaviour
 
     public void ShowDayDisplay(int dayNumber)
     {
-        if (dayDisplayPanel != null)
+        if (dayDisplayPanel == null)
         {
-            dayDisplayPanel.SetActive(true);
+            return;
         }
 
-        if (dayNumberText != null)
+        if (dayDisplayCoroutine != null)
         {
-            dayNumberText.text = "Day " + dayNumber;
+            StopCoroutine(dayDisplayCoroutine);
         }
-    }
 
-    public void HideDayDisplay()
-    {
-        if (dayDisplayPanel != null)
-        {
-            dayDisplayPanel.SetActive(false);
-        }
+        dayDisplayCoroutine = StartCoroutine(DayDisplaySequence(dayNumber));
     }
 
     public void ShowWinScreen()
     {
+        HideAllScreens();
+
         if (winScreenPanel != null)
         {
             winScreenPanel.SetActive(true);
@@ -79,7 +84,11 @@ public class UIManager : MonoBehaviour
             winTitleText.text = "THE WORLD IS SAVED";
         }
 
-        // TODO Task 3.1: Add DOTween fade-in animation
+        if (winScreenCanvasGroup != null)
+        {
+            winScreenCanvasGroup.alpha = 0f;
+            winScreenCanvasGroup.DOFade(1f, 1.5f);
+        }
     }
 
     public void ShowDeathScreen()
@@ -94,7 +103,11 @@ public class UIManager : MonoBehaviour
             deathResetText.text = "Day 1";
         }
 
-        // TODO Task 3.1: Add blackout hold and fade
+        if (deathScreenCanvasGroup != null)
+        {
+            deathScreenCanvasGroup.alpha = 0f;
+            deathScreenCanvasGroup.DOFade(1f, 0.5f);
+        }
     }
 
     public void HideAllScreens()
@@ -117,15 +130,63 @@ public class UIManager : MonoBehaviour
 
     public void SetBlackout(float alpha)
     {
-        if (blackoutImage != null)
+        if (blackoutImage == null)
         {
-            Color color = blackoutImage.color;
-            color.a = alpha;
-            blackoutImage.color = color;
+            return;
         }
 
-        // Used to instantly set blackout alpha.
-        // TODO Task 3.1: Replace with DOTween fade coroutine.
+        Color color = blackoutImage.color;
+        color.a = alpha;
+        blackoutImage.color = color;
+    }
+
+    public void FadeBlackout(float targetAlpha, float duration, Action onComplete = null)
+    {
+        if (blackoutImage == null)
+        {
+            onComplete?.Invoke();
+            return;
+        }
+
+        blackoutImage.DOFade(targetAlpha, duration)
+            .OnComplete(() => onComplete?.Invoke());
+    }
+
+    private IEnumerator DayDisplaySequence(int dayNumber)
+    {
+        if (dayDisplayCanvasGroup != null)
+        {
+            dayDisplayCanvasGroup.alpha = 0f;
+        }
+
+        if (dayNumberText != null)
+        {
+            dayNumberText.text = "Day " + dayNumber;
+        }
+
+        if (dayDisplayPanel != null)
+        {
+            dayDisplayPanel.SetActive(true);
+        }
+
+        if (dayDisplayCanvasGroup != null)
+        {
+            dayDisplayCanvasGroup.DOFade(1f, 0.5f);
+        }
+
+        yield return new WaitForSeconds(dayDisplayDuration);
+
+        if (dayDisplayCanvasGroup != null)
+        {
+            yield return dayDisplayCanvasGroup.DOFade(0f, 0.5f).WaitForCompletion();
+        }
+
+        if (dayDisplayPanel != null)
+        {
+            dayDisplayPanel.SetActive(false);
+        }
+
+        dayDisplayCoroutine = null;
     }
 
     private void HandleGameStateChanged(GameState newState)
@@ -144,24 +205,16 @@ public class UIManager : MonoBehaviour
         {
             case GameState.RunStart:
                 HideAllScreens();
-                SetBlackout(0f);
+                FadeBlackout(0f, 0.5f);
                 break;
             case GameState.DayStart:
                 HideAllScreens();
-                break;
-            case GameState.DayActive:
-                HideDayDisplay();
-                break;
-            case GameState.DayResolved:
                 break;
             case GameState.PlayerDead:
                 ShowDeathScreen();
                 break;
             case GameState.GameWon:
-                ShowWinScreen();
-                break;
-            case GameState.MainMenu:
-                HideAllScreens();
+                FadeBlackout(0f, 1.0f, ShowWinScreen);
                 break;
             default:
                 break;
@@ -180,13 +233,14 @@ public class UIManager : MonoBehaviour
 
     private void HandlePlayerDied()
     {
+        if (deathStingAudio != null) deathStingAudio.Play();
+
         if (!isInitialised)
         {
             return;
         }
 
-        SetBlackout(1f);
-        ShowDeathScreen();
+        FadeBlackout(1f, 0.3f);
     }
 
     private void HandleGameWon()
@@ -196,7 +250,6 @@ public class UIManager : MonoBehaviour
             return;
         }
 
-        SetBlackout(0f);
-        ShowWinScreen();
+        FadeBlackout(0f, 1.0f, ShowWinScreen);
     }
 }

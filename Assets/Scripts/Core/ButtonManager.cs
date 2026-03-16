@@ -5,6 +5,7 @@ public class ButtonManager : MonoBehaviour
     [SerializeField] private Transform[] redButtonPositions;
     [SerializeField] private Transform greenButtonTransform;
     [SerializeField] private GameObject redButtonObject;
+    [SerializeField] private AudioSource buttonClickAudio;
     [SerializeField] private float interactionRadius = 1.5f;
     [SerializeField] private GameObject playerObject;
 
@@ -93,11 +94,13 @@ public class ButtonManager : MonoBehaviour
 
     private void OnREDPressed()
     {
+        if (buttonClickAudio != null) buttonClickAudio.Play();
         EventBus.OnREDButtonPressed?.Invoke();
     }
 
     private void OnGREENPressed()
     {
+        if (buttonClickAudio != null) buttonClickAudio.Play();
         EventBus.OnGREENButtonPressed?.Invoke();
     }
 
